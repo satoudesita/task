@@ -1,0 +1,3 @@
+flask
+datetime
+gunicorn>=21.2.0
