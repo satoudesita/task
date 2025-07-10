@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>タスク管理</title>
+<link
+rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/destyle.css@1.0.15/destyle.css"
+/>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <main>
+    <header>
+        <h1>📝 Tasks 科学部情報班</h1>
+        <button id="openDialog">＋ 追加</button>
+    </header>
+    <ul id="task-list"></ul>
+  </main>
+
+  <dialog id="taskDialog">
+    <form method="dialog" id="taskForm">
+      <label>
+        名前: <input type="text" id="name" required />
+      </label>
+      <label>
+        締切: <input type="date" id="date" />
+      </label>
+      <label>
+        URL: <input type="url" id="url"/>
+      </label>
+      <label>
+        詳細: <textarea id="detail" style="resize: vertical;"></textarea>
+      </label>
+      <menu>
+        <button type="submit" class="primary">保存</button>
+        <button type="button" id="cancel">キャンセル</button>
+      </menu>
+    </form>
+  </dialog>
+
+  <script>
+    const list = document.getElementById('task-list');
+    const dialog = document.getElementById('taskDialog');
+    const form = document.getElementById('taskForm');
+
+    function renderTasks(tasks) {
+      list.innerHTML = '';
+      tasks.forEach((task, index) => {
+        const limit = Math.ceil((new Date(task.date) - new Date()) / (1000 * 60 * 60 * 24))
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <div class="limit">
+            <p class="label">締切まで</p>
+            <p><span class='v'>${limit}</span></p>
+          </div>
+          <div class="content">
+            <p><strong>${task.name}</strong> - <span class="date">${new Date(task.date).toLocaleDateString('ja-JP', { month: 'long', day: 'numeric' })}</span></p>
+            <a href="${task.url}" target="_blank">${task.url}</a>
+            <p style='opacity:0.6'>${task.detail}</p>
+          </div>
+          <button onclick="deleteTask(${index})">
+            <img src="/static/remove.svg">
+          </button>
+        `;
+        list.appendChild(li);
+      });
+      const items = Array.from(list.children);
+      items.sort((a, b) => {
+        const dateA = Number(a.querySelector('.limit .v').textContent);
+        const dateB = Number(b.querySelector('.limit .v').textContent);
+        return dateA - dateB;
+      });
+      
+      items.forEach(item => list.appendChild(item));
+    }
+
+    async function loadTasks() {
+      const res = await fetch('/tasks');
+      const tasks = await res.json();
+      renderTasks(tasks);
+    }
+
+    async function deleteTask(index) {
+      await fetch(`/tasks/${index}`, { method: 'DELETE' });
+      loadTasks();
+    }
+
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      const task = {
+        name: document.getElementById('name').value,
+        url: document.getElementById('url').value,
+        detail: document.getElementById('detail').value
+      };
+      const date = document.getElementById('date').value;
+      if (date) task.date = date;
+
+      await fetch('/tasks', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(task)
+      });
+
+      dialog.close();
+      form.reset();
+      loadTasks();
+    };
+
+    document.getElementById('openDialog').onclick = () => dialog.showModal();
+    document.getElementById('cancel').onclick = () => dialog.close();
+
+    loadTasks();
+  </script>
+</body>
+</html>
