@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Noto+Sans+JP:wght@100..900&display=swap');
+
+body {
+    font-family: sans-serif;
+    background: #f9f9f9;
+    padding: 16px;
+    padding-top:30px;
+}
+
+dialog {
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    background-color: rgb(252, 252, 252)
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    gap: 14px;
+}
+
+* {
+    font-size: 15px;
+    font-family: "Geist","Noto Sans JP", sans-serif;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+main {
+    max-width: 600px;
+    margin: auto;
+}
+
+h1 {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+button {
+    background-color: #ffffff;
+    color: #1b1b1b;
+    padding: 6px 10px;
+    border-radius: 5px;
+    min-width: 100px;
+    text-align: center;
+    border: 1px solid #d4d4d4;
+}
+
+input, textarea,select {
+    padding: 6px 10px;
+    border: 1px solid #d4d4d4;
+    border-radius: 4px;
+    width: 300px;
+    background-color: #fff;
+}
+
+menu {
+    margin: 0;
+}
+
+select {
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%231b1b1b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    background: #fff;
+    margin-bottom: 0.34rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    padding: 0;
+}
+
+button.primary {
+    background-color: #2d7cf2;
+    color: #fff;
+}
+
+li .limit .v{
+    font-size: 32px;
+}
+
+li .limit {
+    height: 100%;
+    min-height: 100px;
+    width: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid #ccc;
+    gap: 2px;
+    flex-shrink: 0;
+}
+
+li .content {
+    flex-grow: 1;
+    padding: 20px 10px;
+    display: flex;
+    gap: 4px;
+    flex-direction: column;
+}
+
+li p.label {
+    font-size: 12px !important;
+    opacity: 0.6;
+}
+
+li button {
+    min-width: 40px;
+    min-height: 40px;
+    border: none;
+    margin-right: 20px;
+    color: rgb(208, 0, 0);
+}
+
+li button:hover{
+    background-color: #f3f3f3;
+}
+
+li a{
+    opacity: 0.6;
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+    vertical-align: bottom;
+}
