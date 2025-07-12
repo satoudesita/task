@@ -61,6 +61,18 @@ def delete_task(task_index):
         return jsonify({"error": "Task not found"}), 404
     deleted_task = data.pop(task_index)
     save_data()
+
+    #はおここからpowerAutomate追加
+    url = 'https://prod-36.japaneast.logic.azure.com:443/workflows/fe79560e4d0549c0a28054d8f3ac8faa/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=X4cU73v5T7vx1OYxYCRqHcyxGvPxiTGfDN-HpfbC46U'
+    notify_data = new_task.copy()
+    notify_data["動作"] = "削除"
+    try:
+        response = requests.post(url,json=notify_data)
+        response.raise_for_status()
+    except Exception as e:
+        print("Teamsの送信に失敗", e)
+    #ここまで
+
     return jsonify({"message": "Task deleted successfully", "task": deleted_task}), 200
 
 @app.route('/')
