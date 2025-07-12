@@ -48,7 +48,7 @@ def add_task():
     notify_data = new_task.copy()
     notify_data["動作"] = "追加"
     try:
-        response = request.post(url,json=notify_data)
+        response = requests.post(url,json=notify_data)
         response.raise_for_status()
     except Exception as e:
         print("Teamsの送信に失敗", e)
