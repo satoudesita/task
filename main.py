@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request, render_template
 from datetime import datetime
 import json
 import os
+import requests #powerAutomate用はお追加
 
 app = Flask(__name__)
 DATA_FILE = 'tasks.json'
@@ -41,6 +42,17 @@ def add_task():
 
     data.append(new_task)
     save_data()
+
+    #はおここからpowerAutomate追加
+    url = 'https://prod-36.japaneast.logic.azure.com:443/workflows/fe79560e4d0549c0a28054d8f3ac8faa/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=X4cU73v5T7vx1OYxYCRqHcyxGvPxiTGfDN-HpfbC46U'
+    notify_data = new_task.copy()
+    notify_data["動作"] = "追加"
+    try:
+        response = request.post(url,json=notify_data)
+        response.raise_for_status()
+    except Exception as e:
+        print("Teamsの送信に失敗", e)
+    #ここまで
     return jsonify({"message": "Task added successfully", "task": new_task}), 201
 
 @app.route('/tasks/<int:task_index>', methods=['DELETE'])
